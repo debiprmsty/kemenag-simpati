@@ -92,10 +92,15 @@
             </ul>
           </div>
 
-          <!-- Unggah File & Submit Buttons -->
           <div class="flex items-center space-x-4 mt-4">
+            <!-- Tombol Unggah File -->
             <label
-              class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg cursor-pointer hover:bg-green-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              class="inline-flex items-center px-4 py-2 text-white rounded-lg cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed"
+              :class="
+                sections.length
+                  ? 'bg-green-500 hover:bg-green-600 cursor-pointer'
+                  : 'bg-green-300 hover:cursor-not-allowed'
+              "
             >
               <ArrowUpOnSquareIcon class="h-5 w-5 mr-2" />
               Unggah File
@@ -105,14 +110,16 @@
                 @change="onFileChange"
                 class="hidden"
                 accept="*"
-                :disabled="isSubmitting"
+                :disabled="!sections.length || isSubmitting"
               />
             </label>
 
+            <!-- Tombol Submit -->
             <button
               @click="submitForm"
-              :disabled="isSubmitting"
+              :disabled="!sections.length || isSubmitting"
               class="relative px-6 py-2 bg-blue-600 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+              :class="{ 'bg-blue-300 cursor-not-allowed': !sections.length }"
             >
               <template v-if="!isSubmitting"> Submit </template>
               <template v-else>

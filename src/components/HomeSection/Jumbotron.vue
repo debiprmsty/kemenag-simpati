@@ -1,8 +1,8 @@
 <template>
   <section
-    class="overflow-hidden w-full md:max-w-[97vw] max-w-[100vw] mx-auto sm:grid sm:grid-cols-2 md:pt-9 md:p-2 lg:p-5"
+    class="overflow-hidden w-full md:max-w-[97vw] max-w-[100vw] mx-auto sm:grid sm:grid-cols-2 items-center justify-center min-h-screen md:p-2 lg:p-5 md:-mt-11.5 -mt-0"
   >
-    <div class="md:py-10 md:mr-15 md:p-0 lg:p-0 p-4 md:mt-10">
+    <div class="md:mr-15 md:p-0 lg:p-0 p-4">
       <div class="mx-auto md:text-center text-start ltr:sm:text-left rtl:sm:text-right">
         <h1
           class="text-3xl leading-tight font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent md:text-5xl"
