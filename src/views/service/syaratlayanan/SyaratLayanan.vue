@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-full flex flex-col justify-center md:max-w-[94vw] max-w-[92vw] mx-auto bg-gray-50"
-  >
+  <div class="w-full flex flex-col justify-center md:max-w-[94vw] max-w-[92vw] mx-auto">
     <!-- Banner Kecil -->
     <div
       class="mb-6 mt-6 p-4 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-xl shadow-md"
