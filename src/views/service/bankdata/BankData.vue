@@ -17,15 +17,17 @@
       <div
         class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 md:gap-0"
       >
-        <!-- Dropdown Filter Seksi -->
+        <!-- Dropdown Filter Nama Data -->
         <div class="w-full md:w-64">
           <div class="relative">
             <select
-              v-model="selectedSeksi"
+              v-model="selectedNama"
               class="w-full px-4 py-2 bg-gray-100 text-gray-700 border border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition appearance-none pr-10"
             >
-              <option value="">Semua Seksi</option>
-              <option v-for="s in seksiOptions" :key="s" :value="s">{{ s }}</option>
+              <option value="">Semua Data</option>
+              <option v-for="nama in namaOptions" :key="nama" :value="nama">
+                {{ nama }}
+              </option>
             </select>
             <svg
               class="w-4 h-4 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"
@@ -48,7 +50,7 @@
           <input
             v-model="searchTerm"
             type="text"
-            placeholder="Cari permohonan..."
+            placeholder="Cari data..."
             class="w-full px-4 py-2 bg-gray-100 text-gray-700 placeholder-gray-500 rounded-full border border-transparent focus:outline-none focus:ring-2 focus:ring-green-500 transition"
           />
           <svg
@@ -90,6 +92,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
+            <!-- Jika ada item, tampilkan baris data -->
             <tr
               v-for="item in paginatedItems"
               :key="item.nomor"
@@ -117,6 +120,13 @@
                 </a>
               </td>
             </tr>
+
+            <!-- Jika tidak ada item hasil filter/pencarian -->
+            <tr v-if="paginatedItems.length === 0">
+              <td colspan="3" class="px-4 py-8 text-center text-gray-500 italic">
+                Belum ada data...
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -132,9 +142,9 @@
         >
           Prev
         </button>
-        <span class="text-gray-700 font-medium text-sm mr-4"
-          >{{ currentPage }} dari {{ totalPages }}</span
-        >
+        <span class="text-gray-700 font-medium text-sm mr-4">
+          {{ currentPage }} dari {{ totalPages }}
+        </span>
         <button
           @click="nextPage"
           :disabled="currentPage === totalPages"
@@ -150,6 +160,7 @@
 <script setup>
 import { ref, computed } from "vue";
 
+// Contoh data permintaan (requests)
 const requests = ref([
   {
     nomor: 1,
@@ -224,41 +235,52 @@ const requests = ref([
   },
 ]);
 
+// Bindings untuk search & filter
 const searchTerm = ref("");
-const selectedSeksi = ref("");
+const selectedNama = ref("");
 const currentPage = ref(1);
 const perPage = 5;
 
-const seksiOptions = computed(() => [...new Set(requests.value.map((r) => r.seksi))]);
+// Opsi dropdown berdasarkan unique nama_data
+const namaOptions = computed(() => {
+  const allNames = requests.value.map((r) => r.nama_data);
+  // Gunakan Set untuk mendapatkan daftar unik, lalu kembalikan sebagai array
+  return Array.from(new Set(allNames));
+});
 
-const filteredItems = computed(() =>
-  requests.value.filter((item) => {
-    const q = searchTerm.value.toLowerCase();
+// Filter buffer: cari berdasarkan nomor dan nama_data
+const filteredItems = computed(() => {
+  return requests.value.filter((item) => {
+    const q = searchTerm.value.trim().toLowerCase();
+    // Pencarian: cek nomor (toString) atau nama_data
     const matchSearch =
-      item.nomor.toString().includes(q) ||
-      item.seksi.toLowerCase().includes(q) ||
-      item.jenisPelayanan.toLowerCase().includes(q) ||
-      item.bentukLayanan.toLowerCase().includes(q) ||
-      item.waktuPenyelesaian.toLowerCase().includes(q) ||
-      item.syarat.toLowerCase().includes(q);
+      !q || item.nomor.toString().includes(q) || item.nama_data.toLowerCase().includes(q);
 
-    const matchSeksi = !selectedSeksi.value || item.seksi === selectedSeksi.value;
+    // Filter dropdown berdasarkan selectedNama
+    const matchNama = !selectedNama.value || item.nama_data === selectedNama.value;
 
-    return matchSearch && matchSeksi;
-  })
-);
+    return matchSearch && matchNama;
+  });
+});
 
+// Hitung total halaman
 const totalPages = computed(() => Math.ceil(filteredItems.value.length / perPage));
+
+// Ambil hanya halaman yang sedang aktif
 const paginatedItems = computed(() => {
   const start = (currentPage.value - 1) * perPage;
   return filteredItems.value.slice(start, start + perPage);
 });
 
 function nextPage() {
-  if (currentPage.value < totalPages.value) currentPage.value++;
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
 }
 function prevPage() {
-  if (currentPage.value > 1) currentPage.value--;
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white">
+  <div>
     <div
       class="min-h-screen flex flex-col items-center md:max-w-[94vw] max-w-[92vw] mx-auto"
     >
@@ -50,7 +50,7 @@
       </div>
     </div>
   </div>
-  <div class="md:h-[120vh] bg-gray-50 w-full md:py-20 py-10 md:px-5 mb-0 md:mb-30">
+  <div class="bg-gray-100 w-full md:py-20 py-20 md:px-5 mb-0">
     <ProgressDocument />
   </div>
 </template>
@@ -93,5 +93,7 @@ onMounted(() => {
 </script>
 
 <style>
-/* Semua styling sudah di-handle Tailwind */
+body {
+  background-color: #f9fafb;
+}
 </style>

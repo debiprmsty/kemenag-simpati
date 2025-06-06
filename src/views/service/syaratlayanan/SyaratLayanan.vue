@@ -50,7 +50,7 @@
           <input
             v-model="searchTerm"
             type="text"
-            placeholder="Cari permohonan..."
+            placeholder="Cari data..."
             class="w-full px-4 py-2 bg-gray-100 text-gray-700 placeholder-gray-500 rounded-full border border-transparent focus:outline-none focus:ring-2 focus:ring-green-500 transition"
           />
           <svg
@@ -102,6 +102,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
+            <!-- Loop Utama: Tampilkan setiap item jika ada -->
             <tr
               v-for="item in paginatedItems"
               :key="item.id"
@@ -135,6 +136,13 @@
                 >
                   Lihat
                 </button>
+              </td>
+            </tr>
+
+            <!-- Baris "Belum ada data" ketika tidak ada hasil di paginatedItems -->
+            <tr v-if="paginatedItems.length === 0">
+              <td colspan="5" class="px-4 py-8 text-center text-gray-500 italic">
+                Belum ada data...
               </td>
             </tr>
           </tbody>

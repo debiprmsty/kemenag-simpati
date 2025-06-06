@@ -7,7 +7,7 @@
         >
           Layanan & Informasi Publik
         </h2>
-        <p class="text-base text-gray-700 md:text-lg text-center mb-10">
+        <p class="text-base text-gray-700 md:text-lg md:text-center text-justify mb-10">
           Pusat akses layanan dan informasi terpecaya dari Kementerian Agama Kabupaten
           Buleleng yang dirancang guna mendukung keterbukaan, akuntabilitas, serta
           kemudahan pelayanan bagi seluruh pemangku kepentingan. Jelajahi berbagai
