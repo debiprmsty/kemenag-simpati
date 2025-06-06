@@ -1,28 +1,27 @@
 <template>
+  <!-- NAVBAR UTAMA -->
   <nav
-    class="w-full mt-4 md:max-w-[94vw] max-w-[92vw] mx-auto px-4 py-3 bg-white border border-gray-300 rounded-2xl shadow-md flex items-center justify-between"
+    class="w-full mt-4 md:max-w-[94vw] max-w-[92vw] mx-auto px-4 py-3 bg-white border border-gray-300 rounded-2xl shadow-md flex items-center justify-between z-10"
   >
     <!-- Logo -->
     <div class="flex items-center space-x-2">
       <router-link to="/" class="flex gap-2">
         <img src="/image/logo_web.png" alt="Logo" class="h-8 hover:cursor-pointer" />
-        <span class="text-gray-900 font-semibold text-lg hover:cursor-pointer md:mt-0.5"
-          >SIMPATI</span
-        >
+        <span class="text-gray-900 font-semibold text-lg hover:cursor-pointer mt-0.5">
+          SIMPATI
+        </span>
       </router-link>
     </div>
 
-    <!-- Mid Menu -->
+    <!-- Mid Menu (desktop only) -->
     <div class="hidden md:flex items-center space-x-6">
       <!-- Beranda -->
       <router-link
         to="/"
-        class="px-3 py-2 rounded-2xl font-semibold text-gray-800 transition"
+        class="px-3 py-2 rounded-2xl font-semibold text-gray-800 hover:text-white hover:bg-[#D5E3DA] transition"
         :class="{
-          'bg-[#D5E3DA] border border-[#C4DAD2] hover:bg-[#D5E3DA]': isActiveRoute('/'),
-          'bg-transparent border border-transparent hover:bg-[#D5E3DA]': !isActiveRoute(
-            '/'
-          ),
+          'bg-[#D5E3DA] border border-[#C4DAD2]': isActiveRoute('/'),
+          'bg-transparent border border-transparent': !isActiveRoute('/'),
         }"
       >
         Beranda
@@ -31,14 +30,10 @@
       <!-- FAQ -->
       <router-link
         to="/faq"
-        class="px-3 py-2 rounded-2xl font-semibold text-gray-800 transition"
+        class="px-3 py-2 rounded-2xl font-semibold text-gray-800 hover:text-white hover:bg-[#D5E3DA] transition"
         :class="{
-          'bg-[#D5E3DA] border border-[#C4DAD2] hover:bg-[#D5E3DA]': isActiveRoute(
-            '/faq'
-          ),
-          'bg-transparent border border-transparent hover:bg-[#D5E3DA]': !isActiveRoute(
-            '/faq'
-          ),
+          'bg-[#D5E3DA] border border-[#C4DAD2]': isActiveRoute('/faq'),
+          'bg-transparent border border-transparent': !isActiveRoute('/faq'),
         }"
       >
         FAQ
@@ -48,11 +43,11 @@
       <div class="relative">
         <button
           @click="togglePengaduanDropdown"
-          class="inline-flex items-center space-x-1 px-3 py-2 rounded-2xl font-medium text-gray-800 transition"
+          class="inline-flex items-center space-x-1 px-3 py-2 rounded-2xl font-medium text-gray-800 hover:text-white hover:bg-[#D5E3DA] transition"
           :class="{
-            'bg-[#D5E3DA] border border-[#C4DAD2] hover:bg-[#D5E3DA]':
+            'bg-[#D5E3DA] border border-[#C4DAD2]':
               isActiveRoute('/sp4n-lapor') || isActiveRoute('/whatsapp-center'),
-            'bg-transparent border border-transparent hover:bg-[#D5E3DA]': !(
+            'bg-transparent border border-transparent': !(
               isActiveRoute('/sp4n-lapor') || isActiveRoute('/whatsapp-center')
             ),
           }"
@@ -65,25 +60,31 @@
             viewBox="0 0 20 20"
           >
             <path
-              d="M5.23 7.21a.75.75 0 011.06.02L10 10.98l3.71-3.75a.75.75 0 011.08 1.04l-4.24 4.29a.75.75 0 01-1.06 0L5.23 8.27a.75.75 0 01.02-1.06z"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 10.98l3.71-3.75a.75.75
+                 0 011.08 1.04l-4.24 4.29a.75.75 0 01-1.06 0L5.23
+                 8.27a.75.75 0 01.02-1.06z"
             />
           </svg>
         </button>
+
+        <!-- Dropdown untuk Pengaduan Publik -->
         <div
           v-if="pengaduanDropdownOpen"
           class="absolute right-0 mt-2 bg-white border border-gray-100 rounded-xl shadow-lg w-44 z-20"
         >
           <router-link
             to="/sp4n-lapor"
-            class="block px-4 py-2 text-gray-700 hover:bg-[#E9EFEC] rounded-xl transition"
+            class="block px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-[#E9EFEC] rounded-xl transition"
             :class="{ 'bg-[#E9EFEC]': isActiveRoute('/sp4n-lapor') }"
+            @click="pengaduanDropdownOpen = false"
           >
             SP4N Lapor
           </router-link>
           <a
             href="https://wa.me/+6285928877957"
-            class="block px-4 py-2 text-gray-700 hover:bg-[#E9EFEC] rounded-xl transition"
+            class="block px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-[#E9EFEC] rounded-xl transition"
             :class="{ 'bg-[#E9EFEC]': isActiveRoute('/whatsapp-center') }"
+            @click="pengaduanDropdownOpen = false"
           >
             WhatsApp Center
           </a>
@@ -91,7 +92,9 @@
       </div>
     </div>
 
+    <!-- Bagian kanan (Auth / Profil) -->
     <div class="hidden md:flex items-center space-x-4">
+      <!-- Tombol Masuk / Daftar -->
       <router-link
         v-if="!isLoggedIn"
         to="/layanan-publik/auth/login"
@@ -107,6 +110,7 @@
         Daftar
       </router-link>
 
+      <!-- Profil dan Logout -->
       <div v-if="isLoggedIn" class="relative">
         <button
           @click="toggleProfileDropdown"
@@ -132,22 +136,21 @@
         >
           <router-link
             to="/profile"
-            class="block px-4 py-2 text-sm text-gray-700 hover:bg-[#E9EFEC] transition"
+            class="block px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-[#E9EFEC] transition"
             @click="profileDropdownOpen = false"
           >
             Profil Saya
           </router-link>
           <router-link
             to="/list-satker#me-progress"
-            class="block px-4 py-2 text-sm text-gray-700 hover:bg-[#E9EFEC] transition"
+            class="block px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-[#E9EFEC] transition"
             @click="profileDropdownOpen = false"
           >
             Pengajuan Saya
           </router-link>
-          <!-- Pastikan memanggil triggerLogoutConfirmation di sini -->
           <button
             @click="triggerLogoutConfirmation"
-            class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-[#E9EFEC] hover:text-red-600 transition"
+            class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:text-red-600 hover:bg-[#E9EFEC] transition"
           >
             Logout
           </button>
@@ -155,6 +158,7 @@
       </div>
     </div>
 
+    <!-- Tombol Hamburger (mobile) -->
     <button @click="mobileOpen = !mobileOpen" class="md:hidden text-gray-800">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -173,7 +177,7 @@
     </button>
   </nav>
 
-  <!-- Mobile Navbar -->
+  <!-- MOBILE MENU -->
   <div
     v-if="mobileOpen"
     class="md:hidden bg-white border-t border-gray-200 shadow-md mx-4 rounded-xl"
@@ -196,7 +200,7 @@
       FAQ
     </router-link>
 
-    <!-- Pengaduan Publik -->
+    <!-- Dropdown Pengaduan Publik -->
     <div class="border-t border-gray-100">
       <button
         @click.stop="togglePengaduanDropdown"
@@ -212,7 +216,8 @@
           viewBox="0 0 20 20"
         >
           <path
-            d="M5.23 7.21a.75.75 0 011.06.02L10 10.98l3.71-3.75a.75.75 0 011.08 1.04l-4.24 4.29a.75.75 0 01-1.06 0L5.23 8.27a.75.75 0 01.02-1.06z"
+            d="M5.23 7.21a.75.75 0 011.06.02L10 10.98l3.71-3.75a.75.75 0 011.08 1.04l-4.24 4.29a.75.75 
+               0 01-1.06 0L5.23 8.27a.75.75 0 01.02-1.06z"
           />
         </svg>
       </button>
@@ -244,7 +249,7 @@
       </div>
     </div>
 
-    <!-- Auth (Masuk/Daftar) jika belum login -->
+    <!-- Auth (Masuk / Daftar) -->
     <div v-if="!isLoggedIn" class="border-t border-gray-100">
       <router-link
         to="/layanan-publik/auth/login"
@@ -262,7 +267,7 @@
       </router-link>
     </div>
 
-    <!-- Profile & Logout jika sudah login -->
+    <!-- Profil & Logout (jika sudah login) -->
     <div v-if="isLoggedIn" class="border-t border-gray-100">
       <button
         @click="toggleProfileDropdown"
@@ -290,12 +295,13 @@
           viewBox="0 0 20 20"
         >
           <path
-            d="M5.23 7.21a.75.75 0 011.06.02L10 10.98l3.71-3.75a.75.75 0 011.08 1.04l-4.24 4.29a.75.75 0 01-1.06 0L5.23 8.27a.75.75 0 01.02-1.06z"
+            d="M5.23 7.21a.75.75 0 011.06.02L10 10.98l3.71-3.75a.75.75 0 011.08 1.04l-4.24 4.29a.75.75 
+               0 01-1.06 0L5.23 8.27a.75.75 0 01.02-1.06z"
           />
         </svg>
       </button>
 
-      <!-- Dropdown Menu Profil Mobile -->
+      <!-- Dropdown Profil Mobile -->
       <div
         v-if="profileDropdownOpen"
         ref="profileMobileDropdownContent"
@@ -323,7 +329,6 @@
         </router-link>
       </div>
 
-      <!-- Tombol Logout Mobile: panggil langsung -->
       <button
         @click="handleMobileLogout"
         class="w-full text-left block px-4 py-2 font-semibold text-gray-800 hover:bg-gray-100 hover:text-red-500 transition"
@@ -333,12 +338,11 @@
     </div>
   </div>
 
-  <!-- Overlay dengan blur, tanpa warna solid -->
+  <!-- MODAL KONFIRMASI LOGOUT -->
   <div
     v-if="showLogoutConfirmModal"
     class="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-50 p-4"
   >
-    <!-- Modal putih -->
     <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
       <h3 class="text-lg font-semibold mb-4 text-gray-900">Konfirmasi Logout</h3>
       <p class="text-gray-700 mb-6">Apakah Anda yakin ingin keluar?</p>
@@ -368,7 +372,10 @@ const mobileOpen = ref(false);
 const pengaduanDropdownOpen = ref(false);
 const profileDropdownOpen = ref(false);
 const showLogoutConfirmModal = ref(false);
+
 const route = useRoute();
+const router = useRouter();
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const isLoggedIn = ref(false);
 const user = ref({
@@ -376,25 +383,12 @@ const user = ref({
   name: null,
 });
 
-// Cek apakah path saat ini sama dengan path target
+// Cek apakah path saat ini sama dengan parameter `path`
 function isActiveRoute(path) {
   return route.path === path;
 }
 
-const router = useRouter();
-const apiUrl = import.meta.env.VITE_API_URL;
-
-// Refs for dropdown elements
-const pengaduanDropdownButton = ref(null);
-const pengaduanDropdownContent = ref(null);
-const profileDropdownButton = ref(null);
-const profileDropdownContent = ref(null);
-const profileMobileDropdownButton = ref(null);
-const profileMobileDropdownContent = ref(null);
-
-// ===========================
-// FETCH USER DATA FUNCTION
-// ===========================
+// Fetch data user jika ada token
 async function fetchUserData(token) {
   try {
     const response = await fetch(`${apiUrl}/me`, {
@@ -408,26 +402,21 @@ async function fetchUserData(token) {
     if (response.ok) {
       const data = await response.json();
       user.value.name = data.data.name;
-
       if (data.data.avatar) {
         user.value.avatarUrl = `${apiUrl}/my-avatar/${data.data.avatar}`;
       } else {
         user.value.avatarUrl = localStorage.getItem("avatarUrl") || "/image/cartoon.png";
       }
-    } else {
-      if (response.status === 401) {
-        await performClientSideLogout();
-        router.push("/layanan-publik/auth/login");
-      }
+    } else if (response.status === 401) {
+      await performClientSideLogout();
+      router.push("/layanan-publik/auth/login");
     }
   } catch (error) {
     console.error("Error fetching user data:", error);
   }
 }
 
-// ===========================
-// LOGOUT FUNCTIONS
-// ===========================
+// Logout lokal
 async function performClientSideLogout() {
   localStorage.removeItem("token");
   localStorage.removeItem("avatarUrl");
@@ -438,6 +427,7 @@ async function performClientSideLogout() {
   mobileOpen.value = false;
 }
 
+// Eksekusi logout via API lalu lokal
 async function executeLogout() {
   showLogoutConfirmModal.value = false;
   const token = localStorage.getItem("token");
@@ -467,25 +457,16 @@ function cancelLogout() {
   showLogoutConfirmModal.value = false;
 }
 
-// ===========================
-// METODE BARU: triggerLogoutConfirmation
-// ===========================
 function triggerLogoutConfirmation() {
-  // Tutup dropdown profil (jika terbuka)
   profileDropdownOpen.value = false;
-  // Tampilkan modal konfirmasi logout
   showLogoutConfirmModal.value = true;
 }
 
-// Untuk tombol logout di versi mobile (langsung memanggil triggerLogoutConfirmation + menutup mobile menu)
 function handleMobileLogout() {
   mobileOpen.value = false;
   triggerLogoutConfirmation();
 }
 
-// ===========================
-// DROPDOWN TOGGLES
-// ===========================
 function togglePengaduanDropdown() {
   pengaduanDropdownOpen.value = !pengaduanDropdownOpen.value;
   profileDropdownOpen.value = false;
@@ -496,11 +477,9 @@ function toggleProfileDropdown() {
   if (profileDropdownOpen.value) pengaduanDropdownOpen.value = false;
 }
 
-// ===========================
-// HANDLE CLICK OUTSIDE
-// ===========================
-const handleClickOutside = (event) => {
-  // Pengaduan dropdown (desktop & mobile)
+// Handle klik di luar dropdown
+function handleClickOutside(event) {
+  // Pengaduan desktop & mobile
   if (
     pengaduanDropdownOpen.value &&
     pengaduanDropdownButton.value &&
@@ -511,7 +490,7 @@ const handleClickOutside = (event) => {
     pengaduanDropdownOpen.value = false;
   }
 
-  // Profil dropdown (desktop & mobile)
+  // Profil desktop & mobile
   if (profileDropdownOpen.value) {
     const isDesktopButton = profileDropdownButton.value?.contains(event.target);
     const isDesktopContent = profileDropdownContent.value?.contains(event.target);
@@ -522,52 +501,39 @@ const handleClickOutside = (event) => {
       profileDropdownOpen.value = false;
     }
   }
-};
+}
 
-// ===========================
-// LIFECYCLE: onMounted & onBeforeUnmount
-// ===========================
+const pengaduanDropdownButton = ref(null);
+const pengaduanDropdownContent = ref(null);
+const profileDropdownButton = ref(null);
+const profileDropdownContent = ref(null);
+const profileMobileDropdownButton = ref(null);
+const profileMobileDropdownContent = ref(null);
+
 onMounted(() => {
   const token = localStorage.getItem("token");
   isLoggedIn.value = !!token;
 
   if (isLoggedIn.value) {
-    // Set initial avatar dari localStorage jika tersedia
     user.value.avatarUrl = localStorage.getItem("avatarUrl") || "/image/cartoon.png";
     fetchUserData(token);
   }
 
-  // Listener untuk custom event "profileUpdated"
-  const onProfileUpdated = () => {
-    const tkn = localStorage.getItem("token");
-    if (tkn) {
-      fetchUserData(tkn);
-    }
-  };
-  window.addEventListener("profileUpdated", onProfileUpdated);
-  window._onProfileUpdated = onProfileUpdated;
-
-  // Listener global untuk klik di luar dropdown
-  document.addEventListener("click", handleClickOutside);
+  window.addEventListener("click", handleClickOutside);
 });
 
 onBeforeUnmount(() => {
-  document.removeEventListener("click", handleClickOutside);
-  if (window._onProfileUpdated) {
-    window.removeEventListener("profileUpdated", window._onProfileUpdated);
-    delete window._onProfileUpdated;
-  }
+  window.removeEventListener("click", handleClickOutside);
 });
 </script>
 
 <style>
-html,
-body,
-#app {
-  margin: 0;
-  height: 100%;
-}
 .rotate-180 {
   transform: rotate(180deg);
+}
+
+/* Pastikan navbar selalu di atas konten lain */
+nav {
+  z-index: 999;
 }
 </style>
