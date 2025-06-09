@@ -383,7 +383,7 @@ const user = ref({
   name: null,
 });
 
-// Cek apakah path saat ini sama dengan parameter `path`
+// Utility untuk cek active route
 function isActiveRoute(path) {
   return route.path === path;
 }
@@ -398,15 +398,12 @@ async function fetchUserData(token) {
         Accept: "application/json",
       },
     });
-
     if (response.ok) {
       const data = await response.json();
       user.value.name = data.data.name;
-      if (data.data.avatar) {
-        user.value.avatarUrl = `${apiUrl}/my-avatar/${data.data.avatar}`;
-      } else {
-        user.value.avatarUrl = localStorage.getItem("avatarUrl") || "/image/cartoon.png";
-      }
+      user.value.avatarUrl = data.data.avatar
+        ? `${apiUrl}/my-avatar/${data.data.avatar}`
+        : localStorage.getItem("avatarUrl") || "/image/cartoon.png";
     } else if (response.status === 401) {
       await performClientSideLogout();
       router.push("/layanan-publik/auth/login");
@@ -431,55 +428,59 @@ async function performClientSideLogout() {
 async function executeLogout() {
   showLogoutConfirmModal.value = false;
   const token = localStorage.getItem("token");
-
   if (token && apiUrl) {
     try {
-      const response = await fetch(`${apiUrl}/logout`, {
+      await fetch(`${apiUrl}/logout`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       });
-      if (!response.ok) {
-        console.warn("API logout request failed:", response.status);
-      }
     } catch (error) {
-      console.error("Error calling logout API:", error);
+      console.warn("API logout request failed:", error);
     }
   }
-
   await performClientSideLogout();
   router.push("/layanan-publik/auth/login");
 }
 
+// Modal control
 function cancelLogout() {
   showLogoutConfirmModal.value = false;
 }
-
 function triggerLogoutConfirmation() {
   profileDropdownOpen.value = false;
   showLogoutConfirmModal.value = true;
 }
-
 function handleMobileLogout() {
   mobileOpen.value = false;
   triggerLogoutConfirmation();
 }
 
+// Dropdown toggles
 function togglePengaduanDropdown() {
   pengaduanDropdownOpen.value = !pengaduanDropdownOpen.value;
   profileDropdownOpen.value = false;
 }
-
 function toggleProfileDropdown() {
   profileDropdownOpen.value = !profileDropdownOpen.value;
   if (profileDropdownOpen.value) pengaduanDropdownOpen.value = false;
 }
 
-// Handle klik di luar dropdown
+// Refs untuk elemen dropdown
+const pengaduanDropdownButton = ref(null);
+const pengaduanDropdownContent = ref(null);
+const profileDropdownButton = ref(null);
+const profileDropdownContent = ref(null);
+const profileMobileDropdownButton = ref(null);
+const profileMobileDropdownContent = ref(null);
+
+// === Event handler named functions ===
+
+// Klik di luar dropdown → tutup dropdown manapun yang open
 function handleClickOutside(event) {
-  // Pengaduan desktop & mobile
+  // Pengaduan (desktop & mobile)
   if (
     pengaduanDropdownOpen.value &&
     pengaduanDropdownButton.value &&
@@ -490,64 +491,56 @@ function handleClickOutside(event) {
     pengaduanDropdownOpen.value = false;
   }
 
-  // Profil desktop & mobile
+  // Profil (desktop & mobile)
   if (profileDropdownOpen.value) {
-    const isDesktopButton = profileDropdownButton.value?.contains(event.target);
-    const isDesktopContent = profileDropdownContent.value?.contains(event.target);
-    const isMobileButton = profileMobileDropdownButton.value?.contains(event.target);
-    const isMobileContent = profileMobileDropdownContent.value?.contains(event.target);
-
-    if (!isDesktopButton && !isDesktopContent && !isMobileButton && !isMobileContent) {
+    const isDeskBtn = profileDropdownButton.value?.contains(event.target);
+    const isDeskContent = profileDropdownContent.value?.contains(event.target);
+    const isMobBtn = profileMobileDropdownButton.value?.contains(event.target);
+    const isMobContent = profileMobileDropdownContent.value?.contains(event.target);
+    if (!isDeskBtn && !isDeskContent && !isMobBtn && !isMobContent) {
       profileDropdownOpen.value = false;
     }
   }
 }
 
-const pengaduanDropdownButton = ref(null);
-const pengaduanDropdownContent = ref(null);
-const profileDropdownButton = ref(null);
-const profileDropdownContent = ref(null);
-const profileMobileDropdownButton = ref(null);
-const profileMobileDropdownContent = ref(null);
-
-const handleStorageChange = (e) => {
+// Storage event → reload user jika ada update
+function handleStorageChange(e) {
   if (e.key === "profile_updated") {
     const token = localStorage.getItem("token");
-    if (token) {
-      fetchUserData(token); // function kamu untuk ambil ulang data user
-    }
+    if (token) fetchUserData(token);
   }
-};
+}
+
+// Custom event 'profile-updated' → update user data
+function handleProfileUpdated(event) {
+  const updatedUser = event.detail;
+  user.value.name = updatedUser.name;
+  if (updatedUser.avatar) {
+    const newAvatarUrl = `${apiUrl}/my-avatar/${updatedUser.avatar}`;
+    user.value.avatarUrl = newAvatarUrl;
+    localStorage.setItem("avatarUrl", newAvatarUrl);
+  }
+}
 
 onMounted(() => {
   const token = localStorage.getItem("token");
   isLoggedIn.value = !!token;
-
   if (isLoggedIn.value) {
     user.value.avatarUrl = localStorage.getItem("avatarUrl") || "/image/cartoon.png";
     fetchUserData(token);
   }
 
+  // Daftarkan semua listener dengan named functions
   window.addEventListener("storage", handleStorageChange);
-
   window.addEventListener("click", handleClickOutside);
-
-  // TAMBAHKAN EVENT LISTENER
-  window.addEventListener("profile-updated", (event) => {
-    const updatedUser = event.detail;
-    user.value.name = updatedUser.name;
-
-    if (updatedUser.avatar) {
-      const newAvatarUrl = `${apiUrl}/my-avatar/${updatedUser.avatar}`;
-      user.value.avatarUrl = newAvatarUrl;
-      localStorage.setItem("avatarUrl", newAvatarUrl);
-    }
-  });
+  window.addEventListener("profile-updated", handleProfileUpdated);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("profile-updated");
+  // Hapus listener dengan dua argumen
   window.removeEventListener("storage", handleStorageChange);
+  window.removeEventListener("click", handleClickOutside);
+  window.removeEventListener("profile-updated", handleProfileUpdated);
 });
 </script>
 
