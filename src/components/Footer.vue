@@ -31,16 +31,23 @@
           <h2 class="text-xl font-semibold mb-4">Menu</h2>
           <ul>
             <li class="mb-2">
-              <a href="#" class="hover:text-gray-300">Beranda</a>
+              <router-link to="/" class="hover:text-gray-300">Beranda</router-link>
             </li>
             <li class="mb-2">
-              <a href="#" class="hover:text-gray-300">FAQ</a>
+              <router-link to="/faq" class="hover:text-gray-300">FAQ</router-link>
             </li>
             <li class="mb-2">
-              <a href="#" class="hover:text-gray-300">SP4N Lapor</a>
+              <router-link to="/sp4n-lapor" class="hover:text-gray-300"
+                >SP4N Lapor</router-link
+              >
             </li>
             <li class="mb-2">
-              <a href="#" class="hover:text-gray-300">WhatsApp Center</a>
+              <a
+                href="https://wa.me/+6285928877957"
+                target="_blank"
+                class="hover:text-gray-300"
+                >WhatsApp Center</a
+              >
             </li>
           </ul>
         </div>

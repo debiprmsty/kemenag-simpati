@@ -18,9 +18,9 @@
       <!-- Beranda -->
       <router-link
         to="/"
-        class="px-3 py-2 rounded-2xl font-semibold text-gray-800 hover:text-white hover:bg-[#D5E3DA] transition"
+        class="px-3 py-2 rounded-2xl font-semibold text-gray-800 hover:text-green-600 hover:bg-[#D5E3DA] transition"
         :class="{
-          'bg-[#D5E3DA] border border-[#C4DAD2]': isActiveRoute('/'),
+          'bg-[#D5E3DA] border border-[#C4DAD2] text-green-600': isActiveRoute('/'),
           'bg-transparent border border-transparent': !isActiveRoute('/'),
         }"
       >
@@ -30,9 +30,9 @@
       <!-- FAQ -->
       <router-link
         to="/faq"
-        class="px-3 py-2 rounded-2xl font-semibold text-gray-800 hover:text-white hover:bg-[#D5E3DA] transition"
+        class="px-3 py-2 rounded-2xl font-semibold text-gray-800 hover:text-green-600 hover:bg-[#D5E3DA] transition"
         :class="{
-          'bg-[#D5E3DA] border border-[#C4DAD2]': isActiveRoute('/faq'),
+          'bg-[#D5E3DA] border border-[#C4DAD2] text-green-600': isActiveRoute('/faq'),
           'bg-transparent border border-transparent': !isActiveRoute('/faq'),
         }"
       >
@@ -43,9 +43,9 @@
       <div class="relative">
         <button
           @click="togglePengaduanDropdown"
-          class="inline-flex items-center space-x-1 px-3 py-2 rounded-2xl font-medium text-gray-800 hover:text-white hover:bg-[#D5E3DA] transition"
+          class="inline-flex items-center hover:cursor-pointer space-x-1 px-3 py-2 rounded-2xl font-medium text-gray-800 hover:text-green-600 hover:bg-[#D5E3DA] transition"
           :class="{
-            'bg-[#D5E3DA] border border-[#C4DAD2]':
+            'bg-[#D5E3DA] border border-[#C4DAD2] text-green-600':
               isActiveRoute('/sp4n-lapor') || isActiveRoute('/whatsapp-center'),
             'bg-transparent border border-transparent': !(
               isActiveRoute('/sp4n-lapor') || isActiveRoute('/whatsapp-center')
@@ -510,6 +510,15 @@ const profileDropdownContent = ref(null);
 const profileMobileDropdownButton = ref(null);
 const profileMobileDropdownContent = ref(null);
 
+const handleStorageChange = (e) => {
+  if (e.key === "profile_updated") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchUserData(token); // function kamu untuk ambil ulang data user
+    }
+  }
+};
+
 onMounted(() => {
   const token = localStorage.getItem("token");
   isLoggedIn.value = !!token;
@@ -519,11 +528,26 @@ onMounted(() => {
     fetchUserData(token);
   }
 
+  window.addEventListener("storage", handleStorageChange);
+
   window.addEventListener("click", handleClickOutside);
+
+  // TAMBAHKAN EVENT LISTENER
+  window.addEventListener("profile-updated", (event) => {
+    const updatedUser = event.detail;
+    user.value.name = updatedUser.name;
+
+    if (updatedUser.avatar) {
+      const newAvatarUrl = `${apiUrl}/my-avatar/${updatedUser.avatar}`;
+      user.value.avatarUrl = newAvatarUrl;
+      localStorage.setItem("avatarUrl", newAvatarUrl);
+    }
+  });
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("click", handleClickOutside);
+  window.removeEventListener("profile-updated");
+  window.removeEventListener("storage", handleStorageChange);
 });
 </script>
 

@@ -15,7 +15,7 @@
     <div class="space-y-4 mb-4">
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">Apa itu SIMPATI?</h2>
 
@@ -45,7 +45,7 @@
 
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">Layanan apa saja yang tersedia di SIMPATI?</h2>
 
@@ -72,7 +72,7 @@
 
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">
             Siapa saja yang bisa menggunakan layanan SIMPATI?
@@ -101,7 +101,7 @@
 
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">
             Bagaimana cara mengakses website SIMPATI?
@@ -131,7 +131,7 @@
 
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">
             Apakah saya harus membuat akun untuk menggunakan layanan SIMPATI?
@@ -160,7 +160,7 @@
 
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">
             Bagaimana cara mendaftar akun SIMPATI?
@@ -196,7 +196,7 @@
 
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">
             Bagaimana cara mengakses layanan yang ada pada website SIMPATI?
@@ -233,7 +233,7 @@
 
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">
             Bagaimana cara mengetahui status permohonan saya?
@@ -262,7 +262,7 @@
 
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">
             Apakah layanan di SIMPATI berbayar?
@@ -291,7 +291,7 @@
 
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">
             Saya mengalami kendala saat menggunakan SIMPATI, ke mana harus menghubungi?
@@ -325,7 +325,7 @@
 
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
+          class="hover:cursor-pointer flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-gray-50 p-4 text-gray-900 shadow-sm"
         >
           <h2 class="text-lg font-medium">
             Apakah SIMPATI bisa diakses melalui HP?

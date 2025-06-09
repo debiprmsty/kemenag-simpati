@@ -437,6 +437,7 @@ const isLoading = ref(false);
 const fileInput = ref(null);
 
 const token = localStorage.getItem("token");
+const emit = defineEmits(["profile-updated"]);
 
 const profile = reactive({
   name: "",
@@ -560,7 +561,6 @@ const saveProfile = async () => {
   isLoading.value = true;
 
   try {
-    // 6.1 Buat FormData
     const formData = new FormData();
     formData.append("name", profile.name);
     formData.append("email", profile.email);
@@ -573,7 +573,6 @@ const saveProfile = async () => {
       formData.append("file", selectedImageFile.value);
     }
 
-    // 6.2 Kirim ke endpoint Laravel
     const res = await axios.post(ENDPOINT_UPDATE_PROFILE, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -584,7 +583,6 @@ const saveProfile = async () => {
     if (res.status === 200 && res.data.status === 200) {
       const updatedUser = res.data.data;
 
-      // --- Update originalProfile (baseline) seperti biasa ---
       originalProfile.name = updatedUser.name;
       originalProfile.email = updatedUser.email;
       originalProfile.no_hp = updatedUser.no_hp;
@@ -593,20 +591,19 @@ const saveProfile = async () => {
 
       selectedImageFile.value = null;
 
-      // --- Dapatkan URL avatar baru, lalu simpan ke localStorage ---
       if (updatedUser.avatar) {
-        // Misal ENDPOINT_FETCH_IMAGE = https://example.com/storage/avatar
         const newAvatarUrl = `${ENDPOINT_FETCH_IMAGE}/${updatedUser.avatar}`;
         profileImageUrl.value = newAvatarUrl;
-
-        // Simpan di localStorage agar navbar bisa akses
         localStorage.setItem("avatarUrl", newAvatarUrl);
       }
 
-      // --- Dispatch custom event agar Navbar tahu user berubah ---
-      window.dispatchEvent(new Event("profileUpdated"));
+      // ✅ Perbaikan di sini
+      window.dispatchEvent(
+        new CustomEvent("profile-updated", {
+          detail: updatedUser,
+        })
+      );
 
-      // --- Tampilkan SweetAlert sukses seperti biasa ---
       await Swal.fire({
         icon: "success",
         title: "Berhasil",
@@ -624,7 +621,7 @@ const saveProfile = async () => {
   } catch (err) {
     console.error("Error menyimpan profil:", err);
     let pesan = "Terjadi kesalahan saat menyimpan data.";
-    if (err.response && err.response.data && err.response.data.message) {
+    if (err.response?.data?.message) {
       pesan = err.response.data.message;
     }
     await Swal.fire({
